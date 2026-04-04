@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FireShield Home Systems — Wildfire Protection for Your Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0d1b2a; --navy2: #1a2e4a; --navy3: #0a1218;
+    --orange: #e85d04; --amber: #f4a623; --red-glow: #ff3d00;
+    --silver: #c8d6e5; --white: #ffffff; --light: #f5f8fc; --smoke: #6b7d8f;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--navy); background: var(--white); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(13,27,42,0.96);
+    backdrop-filter: blur(10px);
+    padding: 0 48px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(200,214,229,0.1);
+  }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: white; letter-spacing: 2px; }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 13px; font-weight: 500; color: var(--silver); text-decoration: none; letter-spacing: 0.5px; transition: color 0.2s; }
+  .nav-links a:hover { color: white; }
+  .nav-cta { background: var(--orange); color: white; font-size: 13px; font-weight: 700; padding: 10px 24px; text-decoration: none; letter-spacing: 0.5px; transition: opacity 0.2s; }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy3);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding: 120px 48px 80px;
+  }
+  /* Animated fire glow background */
+  .hero-glow {
+    position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(232,93,4,0.25) 0%, rgba(244,166,35,0.1) 40%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-52%) scale(1.08); opacity: 1; }
+  }
+  /* Grid overlay */
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(200,214,229,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(200,214,229,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,93,4,0.15);
+    border: 1px solid rgba(232,93,4,0.4);
+    color: var(--amber);
+    font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 14px; margin-bottom: 28px;
+  }
+  .hero-eyebrow::before { content: '🔥'; }
+  .hero-h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 8vw, 100px);
+    color: white; line-height: 0.92; letter-spacing: 2px;
+    margin-bottom: 28px;
+  }
+  .hero-h1 em { color: var(--orange); font-style: normal; }
+  .hero-sub { font-size: 18px; font-weight: 300; color: var(--silver); line-height: 1.7; margin-bottom: 40px; max-width: 540px; }
+  .hero-actions { display: flex; gap: 16px; align-items: center; margin-bottom: 56px; }
+  .btn-primary { background: var(--orange); color: white; font-weight: 700; font-size: 15px; padding: 16px 36px; text-decoration: none; letter-spacing: 0.5px; transition: all 0.2s; }
+  .btn-primary:hover { background: #d45203; transform: translateY(-1px); }
+  .btn-secondary { color: var(--silver); font-size: 14px; font-weight: 500; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+  .btn-secondary:hover { color: white; }
+  .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .hero-stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(200,214,229,0.1); padding: 20px 24px; }
+  .hero-stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: white; line-height: 1; }
+  .hero-stat-n em { color: var(--orange); font-style: normal; }
+  .hero-stat-l { font-size: 11px; color: var(--smoke); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ── URGENCY BANNER ── */
+  .urgency {
+    background: var(--orange);
+    padding: 14px 48px;
+    text-align: center;
+    font-size: 14px; font-weight: 600; color: white; letter-spacing: 0.5px;
+  }
+  .urgency strong { font-weight: 800; }
+
+  /* ── PROBLEM ── */
+  .problem { padding: 96px 48px; background: var(--light); }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--navy); letter-spacing: 1px; line-height: 1; margin-bottom: 20px; }
+  .body-text { font-size: 16px; color: var(--smoke); line-height: 1.8; margin-bottom: 28px; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat-card { background: white; padding: 20px; border-left: 3px solid var(--orange); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .stat-n { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--navy); }
+  .stat-l { font-size: 12px; color: var(--smoke); margin-top: 2px; }
+  .problem-visual { background: var(--navy); padding: 32px; position: relative; overflow: hidden; }
+  .problem-visual-inner { font-size: 13px; color: var(--silver); line-height: 2; }
+  .problem-visual-inner .bad { color: #ff6b5b; font-weight: 700; }
+  .problem-visual-inner .good { color: #5ae68a; font-weight: 700; }
+  .problem-visual h3 { color: var(--amber); font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* ── PRODUCT ── */
+  .product { padding: 96px 48px; background: var(--navy); }
+  .product-inner { max-width: 1100px; margin: 0 auto; }
+  .product .eyebrow { color: var(--amber); }
+  .product h2 { color: white; }
+  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 48px; }
+  .prod-card { background: #112030; padding: 32px; border-top: 3px solid var(--orange); transition: background 0.2s; }
+  .prod-card:hover { background: #162a3e; }
+  .prod-icon { width: 48px; height: 48px; background: rgba(232,93,4,0.15); border: 1px solid rgba(232,93,4,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 18px; }
+  .prod-name { font-size: 15px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .prod-desc { font-size: 14px; color: var(--silver); line-height: 1.7; }
+  .prod-spec { margin-top: 14px; font-size: 12px; font-weight: 700; color: var(--orange); }
+
+  /* ── STEPS ── */
+  .steps-section { padding: 96px 48px; background: var(--light); }
+  .steps-inner { max-width: 1100px; margin: 0 auto; }
+  .steps-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; position: relative; }
+  .steps-list::before {
+    content: ''; position: absolute; top: 48px; left: 10%; right: 10%; height: 2px;
+    background: linear-gradient(90deg, var(--orange), var(--amber)); z-index: 0;
+  }
+  .step-item { position: relative; z-index: 1; padding: 0 16px; }
+  .step-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--orange); color: white;
+    font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; box-shadow: 0 0 24px rgba(232,93,4,0.4);
+  }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--navy); text-align: center; margin-bottom: 8px; }
+  .step-desc { font-size: 13px; color: var(--smoke); text-align: center; line-height: 1.6; }
+  .step-time { display: block; text-align: center; margin-top: 10px; font-size: 11px; font-weight: 700; color: var(--orange); letter-spacing: 1px; }
+
+  /* ── PERFORMANCE ── */
+  .perf-section { padding: 96px 48px; background: var(--navy2); }
+  .perf-inner { max-width: 1100px; margin: 0 auto; }
+  .perf-section .eyebrow { color: var(--amber); }
+  .perf-section h2 { color: white; margin-bottom: 48px; }
+  .perf-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .perf-bar-item { }
+  .perf-bar-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .perf-bar-label { font-size: 13px; font-weight: 600; color: var(--silver); }
+  .perf-bar-val { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: white; }
+  .perf-bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 0; }
+  .perf-bar-fill { height: 100%; background: linear-gradient(90deg, var(--orange), var(--amber)); transition: width 1.5s ease; }
+
+  /* ── PRICING ── */
+  .pricing-section { padding: 96px 48px; background: var(--white); }
+  .pricing-inner { max-width: 1100px; margin: 0 auto; }
+  .pricing-section h2 { text-align: center; margin-bottom: 8px; }
+  .pricing-section .eyebrow { text-align: center; }
+  .pricing-sub { text-align: center; color: var(--smoke); font-size: 16px; margin-bottom: 48px; }
+  .pricing-cards { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 2px; }
+  .price-card { border: 1px solid #e0e8f0; padding: 40px 32px; position: relative; }
+  .price-card.main { border: 2px solid var(--orange); background: #fffaf7; }
+  .price-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 5px 16px; white-space: nowrap; }
+  .price-tier { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--smoke); margin-bottom: 12px; }
+  .price-amount { font-family: 'Bebas Neue', sans-serif; font-size: 54px; color: var(--navy); line-height: 1; margin-bottom: 6px; }
+  .price-amount span { font-size: 20px; color: var(--smoke); }
+  .price-desc { font-size: 14px; color: var(--smoke); line-height: 1.6; padding-bottom: 20px; border-bottom: 1px solid #e0e8f0; margin-bottom: 20px; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .price-features li { font-size: 14px; color: var(--navy); display: flex; gap: 10px; align-items: flex-start; }
+  .price-features li::before { content: "✓"; color: var(--orange); font-weight: 700; flex-shrink: 0; }
+  .price-btn { display: block; text-align: center; margin-top: 28px; padding: 14px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+  .price-btn-main { background: var(--orange); color: white; }
+  .price-btn-main:hover { background: #d45203; }
+  .price-btn-sec { border: 1px solid #c0d0e0; color: var(--navy); }
+  .price-btn-sec:hover { border-color: var(--navy); }
+
+  /* ── TRUST ── */
+  .trust { padding: 72px 48px; background: var(--light); }
+  .trust-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 48px; }
+  .trust-item { background: white; padding: 32px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .trust-icon { font-size: 32px; margin-bottom: 14px; }
+  .trust-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .trust-desc { font-size: 13px; color: var(--smoke); line-height: 1.6; }
+
+  /* ── CTA ── */
+  .final-cta { padding: 96px 48px; background: var(--navy3); text-align: center; position: relative; overflow: hidden; }
+  .final-cta::before {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,93,4,0.2) 0%, transparent 70%);
+  }
+  .final-cta-inner { position: relative; z-index: 1; }
+  .final-cta h2 { color: white; font-size: 64px; margin-bottom: 16px; }
+  .final-cta p { color: var(--silver); font-size: 18px; max-width: 500px; margin: 0 auto 40px; }
+  .final-cta-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--navy3); border-top: 1px solid rgba(200,214,229,0.08); padding: 48px; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; max-width: 1100px; margin: 0 auto; }
+  .footer-brand { }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: white; letter-spacing: 2px; margin-bottom: 12px; }
+  .footer-logo span { color: var(--orange); }
+  .footer-tagline { font-size: 13px; color: var(--smoke); line-height: 1.7; max-width: 240px; }
+  .footer-col h4 { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 16px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-col li a { font-size: 13px; color: var(--smoke); text-decoration: none; transition: color 0.2s; }
+  .footer-col li a:hover { color: white; }
+  .footer-bottom { border-top: 1px solid rgba(200,214,229,0.06); padding-top: 24px; margin-top: 48px; text-align: center; font-size: 12px; color: var(--smoke); max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp 0.7s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FIRE<span>shield</span></div>
+  <ul class="nav-links">
+    <li><a href="#product">How It Works</a></li>
+    <li><a href="#components">Components</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Get Protected</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content fade-up">
+    <div class="hero-eyebrow">Wildfire Season Is Year-Round Now</div>
+    <h1 class="hero-h1">PROTECT YOUR<br>HOME FROM<br><em>WILDFIRE</em></h1>
+    <p class="hero-sub">The first owner-deployable, full-structure fire-resistant wrap for standard homes. One person. 30 minutes. No power required.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn-primary">Get Protected Today</a>
+      <a href="#product" class="btn-secondary">↓ See How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-n"><em>&lt;30</em> min</div>
+        <div class="hero-stat-l">Full deployment time</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n"><em>2,000</em>°F</div>
+        <div class="hero-stat-l">Peak heat resistance</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-n"><em>100</em>%</div>
+        <div class="hero-stat-l">Ember intrusion blocked</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- URGENCY BANNER -->
+<div class="urgency">
+  <strong>🔥 Wildfire season 2026 is already active.</strong> &nbsp;Installation wait times are 2–3 weeks in high-risk zones. Schedule your assessment today.
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="problem-grid">
+    <div>
+      <div class="eyebrow">The Reality</div>
+      <h2>YOUR HOME IS VULNERABLE</h2>
+      <p class="body-text">90% of home ignitions during wildfires are caused not by direct flame, but by ember intrusion and radiant heat through vents, eaves, and windows — the exact points that standard construction leaves unprotected.</p>
+      <p class="body-text">Sprinklers fail when the grid goes down. Gel coatings require professional re-application before every fire. Ember-resistant vents are passive — they don't stop radiant heat. Nothing on the market gives you full-structure, deployable protection you can use yourself.</p>
+      <div class="stat-row">
+        <div class="stat-card"><div class="stat-n">$150B+</div><div class="stat-l">Wildfire losses 2017–2024</div></div>
+        <div class="stat-card"><div class="stat-n">44M</div><div class="stat-l">U.S. homes at risk</div></div>
+        <div class="stat-card"><div class="stat-n">90%</div><div class="stat-l">Ignitions from embers & heat</div></div>
+        <div class="stat-card"><div class="stat-n">$0</div><div class="stat-l">Consumer deployable solutions (before FireShield)</div></div>
+      </div>
+    </div>
+    <div class="problem-visual">
+      <h3>Why Current Solutions Fail</h3>
+      <div class="problem-visual-inner">
+        <p><span class="bad">✗ Home sprinklers</span> — Require grid power and water pressure; both fail during fires</p><br>
+        <p><span class="bad">✗ Gel coatings</span> — Must be reapplied by professionals before every fire</p><br>
+        <p><span class="bad">✗ Ember-resistant vents</span> — Passive only; no protection from radiant heat</p><br>
+        <p><span class="bad">✗ CAL FIRE wraps</span> — Reserved for government use; not available to homeowners</p><br>
+        <p><span class="bad">✗ Fire-resistant landscaping</span> — Reduces ignition risk but doesn't protect structure</p><br><br>
+        <p><span class="good">✓ FireShield</span> — Full structure. Self-deploy. Owner-operated. No power needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section class="product" id="product">
+  <div class="product-inner">
+    <div class="eyebrow">The System</div>
+    <h2 style="color:white;">EVERYTHING YOUR HOME NEEDS</h2>
+    <div class="product-grid">
+      <div class="prod-card">
+        <div class="prod-icon">🛡️</div>
+        <div class="prod-name">Aluminized Outer Shell</div>
+        <div class="prod-desc">Multi-layer aluminized fiberglass wraps your entire structure — roof, walls, and eaves. Reflects 95%+ of incoming radiant heat before it reaches your home's surface.</div>
+        <div class="prod-spec">⚡ Rated to 2,000°F peak exposure</div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🧱</div>
+        <div class="prod-name">Ceramic Fiber Batting</div>
+        <div class="prod-desc">1.5" silica/ceramic fiber insulation between the outer shell and your home maintains a critical temperature differential, keeping wall surfaces well below ignition threshold.</div>
+        <div class="prod-spec">⚡ 1,000°F sustained resistance</div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🔒</div>
+        <div class="prod-name">Magnetic Vent Seals</div>
+        <div class="prod-desc">Ember intrusion through soffits, ridge vents, and gable ends is the #1 cause of home ignition. Magnetic snap-close covers eliminate this pathway entirely.</div>
+        <div class="prod-spec">⚡ 100% ember intrusion block</div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">🪟</div>
+        <div class="prod-name">Window Aluminized Shields</div>
+        <div class="prod-desc">Pre-cut spring-clip aluminized panels for every window. Block radiant heat transmission through glass and prevent frame ignition. 2 minutes per window to deploy.</div>
+        <div class="prod-spec">⚡ 2-minute deployment per window</div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">⚓</div>
+        <div class="prod-name">Weighted Ground Skirt</div>
+        <div class="prod-desc">Integrated ballast channels run the entire perimeter of the wrap at ground level. Fill with sand or water to anchor the system against 60+ mph wildfire winds.</div>
+        <div class="prod-spec">⚡ 60 mph wind resistance</div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-icon">💧</div>
+        <div class="prod-name">Integrated Hose Ports</div>
+        <div class="prod-desc">Four standard ¾" hose connections allow continuous surface wetting. Gravity-fed tank adapter included — works even when municipal water pressure fails.</div>
+        <div class="prod-spec">⚡ Off-grid water compatible</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="steps-section" id="how">
+  <div class="steps-inner">
+    <div class="eyebrow">Deployment</div>
+    <h2>DEPLOY IN 4 STEPS</h2>
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-circle">01</div>
+        <div class="step-title">Receive Alert</div>
+        <div class="step-desc">CAL FIRE evacuation warning received. Begin deployment immediately — don't wait for flames to arrive.</div>
+        <span class="step-time">0 min</span>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">02</div>
+        <div class="step-title">Seal All Openings</div>
+        <div class="step-desc">Apply magnetic vent covers to all soffits, ridge vents, and gable vents. Clip window shields on each window.</div>
+        <span class="step-time">~8 min</span>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">03</div>
+        <div class="step-title">Deploy the Wrap</div>
+        <div class="step-desc">Pull the roof-edge rail release handle. The aluminized wrap unrolls from eave to ground on all sides.</div>
+        <span class="step-time">~15 min</span>
+      </div>
+      <div class="step-item">
+        <div class="step-circle">04</div>
+        <div class="step-title">Anchor &amp; Evacuate</div>
+        <div class="step-desc">Fill ground skirt ballast channels. Connect hose ports if water is available. Then get your family to safety.</div>
+        <span class="step-time">~7 min</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section class="perf-section">
+  <div class="perf-inner">
+    <div class="eyebrow">Specifications</div>
+    <h2>PERFORMANCE TARGETS</h2>
+    <div class="perf-bars">
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Radiant Heat Reflection</span><span class="perf-bar-val">95%+</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:95%"></div></div>
+      </div>
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Ember Intrusion Block</span><span class="perf-bar-val">100%</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Peak Temp Rating</span><span class="perf-bar-val">2,000°F</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Wind Resistance</span><span class="perf-bar-val">60 mph</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:72%"></div></div>
+      </div>
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Solo Deploy Time</span><span class="perf-bar-val">&lt;30 min</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:88%"></div></div>
+      </div>
+      <div class="perf-bar-item">
+        <div class="perf-bar-header"><span class="perf-bar-label">Reuse Cycles</span><span class="perf-bar-val">5+ uses</span></div>
+        <div class="perf-bar-track"><div class="perf-bar-fill" style="width:60%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-inner">
+    <div class="eyebrow" style="text-align:center;">Investment</div>
+    <h2>PROTECT YOUR HOME TODAY</h2>
+    <p class="pricing-sub">Professional installation by certified dealers. Most homes protected in one day.</p>
+    <div class="pricing-cards">
+      <div class="price-card">
+        <div class="price-tier">Standard</div>
+        <div class="price-amount">$4,500 <span>installed</span></div>
+        <div class="price-desc">For homes up to 1,800 sq ft. Includes full system installation by certified dealer.</div>
+        <ul class="price-features">
+          <li>Full aluminized wrap system</li>
+          <li>Vent seals — all openings</li>
+          <li>Window shields (standard set)</li>
+          <li>Ground ballast skirt</li>
+          <li>Deployment training session</li>
+          <li>1-year material warranty</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-sec">Request Assessment</a>
+      </div>
+      <div class="price-card main">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-tier">Complete</div>
+        <div class="price-amount">$6,200 <span>installed</span></div>
+        <div class="price-desc">For homes up to 3,000 sq ft. Our most complete protection for the average single-family home.</div>
+        <ul class="price-features">
+          <li>Everything in Standard</li>
+          <li>Integrated hose ports (×4)</li>
+          <li>Gravity-fed tank adapter</li>
+          <li>Year 1 maintenance plan included</li>
+          <li>Priority emergency hotline</li>
+          <li>2-year warranty</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-main">Get Protected Now</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Annual Maintenance</div>
+        <div class="price-amount">$299 <span>/ year</span></div>
+        <div class="price-desc">Keep your system fire-season-ready, every year. Recommended for all installed homes.</div>
+        <ul class="price-features">
+          <li>Annual certified inspection</li>
+          <li>Full vent seal replacement</li>
+          <li>Material integrity assessment</li>
+          <li>Rail system lubrication</li>
+          <li>Discounted replacement kits</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-sec">Add to Your System</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust">
+  <div class="trust-inner">
+    <div class="eyebrow">Why FireShield</div>
+    <h2>BUILT ON TRUST</h2>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="trust-icon">🏅</div>
+        <div class="trust-title">Certified Installers Only</div>
+        <div class="trust-desc">Every FireShield system is installed by a factory-certified dealer who has completed our 2-day training program.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">📋</div>
+        <div class="trust-title">CAL FIRE Aligned</div>
+        <div class="trust-desc">Designed to meet or exceed California Title 19 fire protection standards and Safer from Wildfires requirements.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💰</div>
+        <div class="trust-title">Insurance Discounts</div>
+        <div class="trust-desc">Many CA insurance carriers now offer premium discounts for homes with qualifying fireproofing measures — ask yours.</div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🌎</div>
+        <div class="trust-title">Made in the USA</div>
+        <div class="trust-desc">All FireShield materials are sourced and assembled domestically, with dual-source supply to ensure availability before fire season.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta" id="contact">
+  <div class="final-cta-inner">
+    <h2>DON'T WAIT FOR<br>FIRE SEASON</h2>
+    <p>Installation wait times in high-risk zones are 2–3 weeks. Schedule your free home assessment today.</p>
+    <div class="final-cta-btns">
+      <a href="/cdn-cgi/l/email-protection#325b5c545d72545b4057415a5b575e565a5d5f57411c515d5f" class="btn-primary" style="font-size:15px;padding:18px 40px;">Schedule Free Assessment</a>
+      <a href="tel:+18005551234" class="btn-secondary" style="color:var(--silver);font-size:15px;">📞 1-800-FIRESHIELD</a>
+    </div>
+    <p style="margin-top:28px;font-size:12px;color:var(--smoke);"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f565159507f59564d5a4c57565a535b5750525a4c115c5052">[email&#160;protected]</a> &nbsp;|&nbsp; www.fireshieldhomes.com &nbsp;|&nbsp; Serving CA · OR · WA · CO · AZ</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">FIRE<span>shield</span></div>
+      <p class="footer-tagline">The first deployable full-structure wildfire protection system for homeowners. Designed in California. Built for the West.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#product">How It Works</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#">Find a Dealer</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Investors</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
