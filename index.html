@@ -1,132 +1,525 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>FireShield Home Systems — Wildfire Protection</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0d1b2a;--navy2:#1a2e4a;--dark:#080f18;--orange:#e85d04;--amber:#f4a623;--silver:#c8d6e5;--white:#fff;--light:#f5f8fc;--smoke:#6b7d8f}
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--white);overflow-x:hidden}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,15,24,0.97);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(200,214,229,0.1)}
-.nav-logo{font-size:22px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
-.nav-logo span{color:var(--orange)}
-.nav-cta{background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:9px 20px;text-decoration:none;letter-spacing:1px;text-transform:uppercase}
-.hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;padding:100px 28px 60px;position:relative;overflow:hidden}
-.hero-glow{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(232,93,4,.22) 0%,rgba(244,166,35,.07) 40%,transparent 70%);animation:pulse 4s ease-in-out infinite;pointer-events:none}
-@keyframes pulse{0%,100%{transform:translateY(-50%) scale(1);opacity:.8}50%{transform:translateY(-52%) scale(1.1);opacity:1}}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,214,229,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,214,229,.03) 1px,transparent 1px);background-size:56px 56px;pointer-events:none}
-.hero-content{position:relative;z-index:2;max-width:640px}
-.hero-badge{display:inline-block;background:rgba(232,93,4,.15);border:1px solid rgba(232,93,4,.4);color:var(--amber);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 14px;margin-bottom:22px}
-.hero-h1{font-size:clamp(52px,8vw,90px);font-weight:900;color:#fff;line-height:.92;letter-spacing:-1px;margin-bottom:22px;text-transform:uppercase}
-.hero-h1 em{color:var(--orange);font-style:normal}
-.hero-sub{font-size:17px;font-weight:300;color:var(--silver);line-height:1.7;margin-bottom:34px;max-width:500px}
-.hero-btns{display:flex;gap:12px;align-items:center;margin-bottom:48px;flex-wrap:wrap}
-.btn-orange{background:var(--orange);color:#fff;font-weight:700;font-size:14px;padding:15px 32px;text-decoration:none;text-transform:uppercase;letter-spacing:.5px;display:inline-block}
-.btn-ghost{color:var(--silver);font-size:14px;text-decoration:none}
-.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.hstat{background:rgba(255,255,255,.04);border:1px solid rgba(200,214,229,.1);padding:18px 16px}
-.hstat-n{font-size:36px;font-weight:900;color:#fff;line-height:1}
-.hstat-n em{color:var(--orange);font-style:normal}
-.hstat-l{font-size:11px;color:var(--smoke);letter-spacing:1px;text-transform:uppercase;margin-top:4px}
-.urgency{background:var(--orange);padding:14px 28px;text-align:center;font-size:13px;font-weight:600;color:#fff}
-section{padding:72px 28px}
-.max{max-width:1060px;margin:0 auto}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:10px}
-h2{font-size:42px;font-weight:900;line-height:1;text-transform:uppercase;letter-spacing:-1px;margin-bottom:16px}
-.body-text{font-size:15px;color:var(--smoke);line-height:1.8;margin-bottom:22px}
-.problem{background:var(--light)}
-.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-.scard{background:#fff;padding:18px;border-left:4px solid var(--orange)}
-.scard-n{font-size:30px;font-weight:900;color:var(--navy)}
-.scard-l{font-size:11px;color:var(--smoke);margin-top:3px}
-.fail-box{background:var(--navy);padding:28px}
-.fail-box h3{color:var(--amber);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
-.fail-box p{font-size:13px;color:var(--silver);padding:7px 0;border-bottom:1px solid rgba(255,255,255,.06)}
-.fail-box p:last-child{border-bottom:none}
-.bad{color:#ff6b5b;font-weight:700}
-.good{color:#5ae68a;font-weight:700}
-.product{background:var(--dark)}
-.product .eyebrow{color:var(--amber)}
-.product h2{color:#fff;margin-bottom:40px}
-.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.pcard{background:#0f1e2e;padding:28px;border-top:3px solid var(--orange)}
-.pcard-icon{font-size:26px;margin-bottom:14px}
-.pcard-name{font-size:12px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
-.pcard-desc{font-size:13px;color:var(--silver);line-height:1.7}
-.pcard-spec{margin-top:12px;font-size:11px;font-weight:700;color:var(--orange)}
-.steps-section{background:var(--light)}
-.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:40px}
-.step{background:#fff;padding:24px;border-top:4px solid var(--orange)}
-.step-num{font-size:48px;font-weight:900;color:rgba(0,0,0,.06);line-height:1;margin-bottom:8px}
-.step-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.step-desc{font-size:13px;color:var(--smoke);line-height:1.6}
-.step-time{display:inline-block;margin-top:12px;background:var(--navy);color:var(--amber);font-size:11px;font-weight:700;padding:3px 10px;letter-spacing:1px}
-.perf{background:var(--navy2)}
-.perf .eyebrow{color:var(--amber)}
-.perf h2{color:#fff;margin-bottom:40px}
-.perf-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-.pbar-head{display:flex;justify-content:space-between;margin-bottom:7px}
-.pbar-label{font-size:13px;font-weight:600;color:var(--silver)}
-.pbar-val{font-size:20px;font-weight:900;color:#fff}
-.pbar-track{height:7px;background:rgba(255,255,255,.08)}
-.pbar-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--amber))}
-.pricing-section{background:#fff}
-.pricing-section h2,.pricing-section .eyebrow{text-align:center}
-.pricing-sub{text-align:center;color:var(--smoke);font-size:15px;margin-bottom:40px}
-.price-grid{display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:2px}
-.price-card{border:1px solid #dde8f0;padding:36px 26px;position:relative}
-.price-card.featured{border:2px solid var(--orange);background:#fffaf7}
-.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;padding:4px 14px;white-space:nowrap;text-transform:uppercase}
-.price-tier{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--smoke);margin-bottom:10px}
-.price-amount{font-size:44px;font-weight:900;color:var(--navy);line-height:1;margin-bottom:6px}
-.price-amount span{font-size:17px;color:var(--smoke);font-weight:400}
-.price-desc{font-size:13px;color:var(--smoke);line-height:1.6;padding-bottom:16px;border-bottom:1px solid #e8eef4;margin-bottom:16px}
-.price-feats{list-style:none;display:flex;flex-direction:column;gap:9px}
-.price-feats li{font-size:13px;color:var(--navy);display:flex;gap:9px}
-.price-feats li::before{content:"✓";color:var(--orange);font-weight:700;flex-shrink:0}
-.price-btn{display:block;text-align:center;margin-top:24px;padding:13px;font-size:13px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.5px}
-.price-btn-main{background:var(--orange);color:#fff}
-.price-btn-sec{border:1px solid #c0d0e0;color:var(--navy)}
-.trust{background:var(--light)}
-.trust h2{text-align:center;margin-bottom:40px}
-.trust .eyebrow{text-align:center}
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.tcard{background:#fff;padding:28px 18px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.05)}
-.tcard-icon{font-size:28px;margin-bottom:12px}
-.tcard-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:7px}
-.tcard-desc{font-size:12px;color:var(--smoke);line-height:1.6}
-.cta-section{background:var(--dark);text-align:center;position:relative;overflow:hidden}
-.cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(232,93,4,.18) 0%,transparent 70%);pointer-events:none}
-.cta-inner{position:relative;z-index:1}
-.cta-section h2{color:#fff;margin-bottom:12px}
-.cta-section p{color:var(--silver);font-size:16px;max-width:460px;margin:0 auto 32px}
-.cta-contact{margin-top:22px;font-size:12px;color:var(--smoke)}
-footer{background:var(--dark);border-top:1px solid rgba(200,214,229,.07);padding:40px 28px}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;max-width:1060px;margin:0 auto}
-.footer-brand-logo{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
-.footer-brand-logo span{color:var(--orange)}
-.footer-tagline{font-size:12px;color:var(--smoke);line-height:1.7;max-width:210px}
-.fcol h4{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
-.fcol ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-.fcol a{font-size:13px;color:var(--smoke);text-decoration:none}
-.footer-bottom{border-top:1px solid rgba(200,214,229,.06);padding-top:20px;margin-top:36px;text-align:center;font-size:11px;color:var(--smoke);max-width:1060px;margin-left:auto;margin-right:auto}
-@media(max-width:800px){.problem-grid,.prod-grid,.steps-grid,.price-grid,.trust-grid,.footer-grid{grid-template-columns:1fr}.hero-stats{grid-template-columns:1fr 1fr}.perf-grid{grid-template-columns:1fr}.stat-row{grid-template-columns:1fr 1fr}}
-</style>
-</head>
-<body>
-<nav><div class="nav-logo">FIRE<span>shield</span></div><a href="#pricing" class="nav-cta">Get Protected</a></nav>
-<section class="hero"><div class="hero-glow"></div><div class="hero-grid"></div><div class="hero-content"><div class="hero-badge">🔥 Wildfire Season Is Year-Round Now</div><h1 class="hero-h1">PROTECT YOUR<br>HOME FROM<br><em>WILDFIRE</em></h1><p class="hero-sub">The first owner-deployable, full-structure fire-resistant wrap for standard homes. One person. 30 minutes. No power required.</p><div class="hero-btns"><a href="#pricing" class="btn-orange">Get Protected Today</a><a href="#how" class="btn-ghost">↓ See How It Works</a></div><div class="hero-stats"><div class="hstat"><div class="hstat-n"><em>&lt;30</em> min</div><div class="hstat-l">Full deployment time</div></div><div class="hstat"><div class="hstat-n"><em>2,000</em>°F</div><div class="hstat-l">Peak heat resistance</div></div><div class="hstat"><div class="hstat-n"><em>100</em>%</div><div class="hstat-l">Ember intrusion blocked</div></div></div></div></section>
-<div class="urgency">🔥 <strong>Wildfire season 2026 is already active.</strong> Installation wait times are 2–3 weeks. Schedule your assessment today.</div>
-<section class="problem"><div class="max"><div class="problem-grid"><div><div class="eyebrow">The Reality</div><h2>Your Home Is Vulnerable</h2><p class="body-text">90% of home ignitions during wildfires are caused by ember intrusion and radiant heat — not direct flame. Standard construction leaves these points completely unprotected.</p><p class="body-text">Sprinklers fail when the grid goes down. Gel coatings need professional re-application before every fire. Nothing gives you full-structure, deployable protection you can use yourself.</p><div class="stat-row"><div class="scard"><div class="scard-n">$150B+</div><div class="scard-l">Wildfire losses 2017–2024</div></div><div class="scard"><div class="scard-n">44M</div><div class="scard-l">U.S. homes at risk</div></div><div class="scard"><div class="scard-n">90%</div><div class="scard-l">Ignitions from embers &amp; heat</div></div><div class="scard"><div class="scard-n">$0</div><div class="scard-l">Consumer deployable solutions (before FireShield)</div></div></div></div><div class="fail-box"><h3>Why Current Solutions Fail</h3><p><span class="bad">✗ Home sprinklers</span> — Require grid power &amp; water pressure; both fail during fires</p><p><span class="bad">✗ Gel coatings</span> — Must be reapplied by professionals before every fire</p><p><span class="bad">✗ Ember-resistant vents</span> — Passive only; no protection from radiant heat</p><p><span class="bad">✗ CAL FIRE wraps</span> — Reserved for government use only</p><p><span class="bad">✗ Fire-resistant landscaping</span> — Reduces risk but doesn't protect structure</p><p><span class="good">✓ FireShield</span> — Full structure. Self-deploy. No power needed.</p></div></div></div></section>
-<section class="product" id="product"><div class="max"><div class="eyebrow">The System</div><h2>Everything Your Home Needs</h2><div class="prod-grid"><div class="pcard"><div class="pcard-icon">🛡️</div><div class="pcard-name">Aluminized Outer Shell</div><div class="pcard-desc">Multi-layer aluminized fiberglass wraps your entire structure — roof, walls, and eaves. Reflects 95%+ of incoming radiant heat before it reaches your home.</div><div class="pcard-spec">⚡ Rated to 2,000°F peak</div></div><div class="pcard"><div class="pcard-icon">🧱</div><div class="pcard-name">Ceramic Fiber Batting</div><div class="pcard-desc">1.5" silica/ceramic fiber insulation keeps surface temperatures below ignition threshold during direct fire exposure.</div><div class="pcard-spec">⚡ 1,000°F sustained resistance</div></div><div class="pcard"><div class="pcard-icon">🔒</div><div class="pcard-name">Magnetic Vent Seals</div><div class="pcard-desc">Ember intrusion through soffits, ridge vents, and gable ends is the #1 cause of home ignition. Magnetic covers eliminate this pathway entirely.</div><div class="pcard-spec">⚡ 100% ember intrusion block</div></div><div class="pcard"><div class="pcard-icon">🪟</div><div class="pcard-name">Window Shields</div><div class="pcard-desc">Pre-cut aluminized spring-clip panels for every window. Block radiant heat and prevent frame ignition in under 2 minutes per window.</div><div class="pcard-spec">⚡ 2-minute deployment per window</div></div><div class="pcard"><div class="pcard-icon">⚓</div><div class="pcard-name">Weighted Ground Skirt</div><div class="pcard-desc">Integrated ballast channels run the full perimeter. Fill with sand or water to anchor against 60+ mph wildfire winds.</div><div class="pcard-spec">⚡ 60 mph wind resistance</div></div><div class="pcard"><div class="pcard-icon">💧</div><div class="pcard-name">Integrated Hose Ports</div><div class="pcard-desc">Four standard hose connections allow continuous surface wetting. Gravity-fed tank adapter included — works when municipal water fails.</div><div class="pcard-spec">⚡ Off-grid water compatible</div></div></div></div></section>
-<section class="steps-section" id="how"><div class="max"><div class="eyebrow">Deployment</div><h2>4 Steps. One Adult. Under 30 Minutes.</h2><div class="steps-grid"><div class="step"><div class="step-num">01</div><div class="step-title">Receive Alert</div><div class="step-desc">CAL FIRE evacuation warning received. Begin deployment immediately — don't wait for flames to arrive.</div><span class="step-time">0 min</span></div><div class="step"><div class="step-num">02</div><div class="step-title">Seal All Openings</div><div class="step-desc">Apply magnetic vent covers to all soffits, ridge vents, and gable vents. Clip window shields on each window.</div><span class="step-time">~8 min</span></div><div class="step"><div class="step-num">03</div><div class="step-title">Deploy the Wrap</div><div class="step-desc">Pull the roof-edge rail release. The aluminized wrap unrolls from eave to ground on all sides simultaneously.</div><span class="step-time">~15 min</span></div><div class="step"><div class="step-num">04</div><div class="step-title">Anchor &amp; Evacuate</div><div class="step-desc">Fill ground skirt ballast channels with sand or water. Connect hose ports if available. Then get your family to safety.</div><span class="step-time">~7 min</span></div></div></div></section>
-<section class="perf"><div class="max"><div class="eyebrow">Specifications</div><h2>Performance Targets</h2><div class="perf-grid"><div><div class="pbar-head"><span class="pbar-label">Radiant Heat Reflection</span><span class="pbar-val">95%+</span></div><div class="pbar-track"><div class="pbar-fill" style="width:95%"></div></div></div><div><div class="pbar-head"><span class="pbar-label">Ember Intrusion Block</span><span class="pbar-val">100%</span></div><div class="pbar-track"><div class="pbar-fill" style="width:100%"></div></div></div><div><div class="pbar-head"><span class="pbar-label">Peak Temperature Rating</span><span class="pbar-val">2,000°F</span></div><div class="pbar-track"><div class="pbar-fill" style="width:85%"></div></div></div><div><div class="pbar-head"><span class="pbar-label">Wind Resistance</span><span class="pbar-val">60 mph</span></div><div class="pbar-track"><div class="pbar-fill" style="width:72%"></div></div></div><div><div class="pbar-head"><span class="pbar-label">Solo Deploy Time</span><span class="pbar-val">&lt;30 min</span></div><div class="pbar-track"><div class="pbar-fill" style="width:88%"></div></div></div><div><div class="pbar-head"><span class="pbar-label">Reuse Cycles</span><span class="pbar-val">5+ uses</span></div><div class="pbar-track"><div class="pbar-fill" style="width:60%"></div></div></div></div></div></section>
-<section class="pricing-section" id="pricing"><div class="max"><div class="eyebrow">Investment</div><h2>Protect Your Home Today</h2><p class="pricing-sub">Professional installation by certified dealers. Most homes protected in one day.</p><div class="price-grid"><div class="price-card"><div class="price-tier">Standard</div><div class="price-amount">$4,500 <span>installed</span></div><div class="price-desc">For homes up to 1,800 sq ft. Full system installation by certified dealer.</div><ul class="price-feats"><li>Full aluminized wrap system</li><li>Vent seals — all openings</li><li>Window shields (standard set)</li><li>Ground ballast skirt</li><li>Deployment training</li><li>1-year warranty</li></ul><a href="#contact" class="price-btn price-btn-sec">Request Assessment</a></div><div class="price-card featured"><div class="price-badge">Most Popular</div><div class="price-tier">Complete</div><div class="price-amount">$6,200 <span>installed</span></div><div class="price-desc">For homes up to 3,000 sq ft. Our most complete protection package.</div><ul class="price-feats"><li>Everything in Standard</li><li>Integrated hose ports (×4)</li><li>Gravity-fed tank adapter</li><li>Year 1 maintenance included</li><li>Priority emergency hotline</li><li>2-year warranty</li></ul><a href="#contact" class="price-btn price-btn-main">Get Protected Now</a></div><div class="price-card"><div class="price-tier">Annual Maintenance</div><div class="price-amount">$299 <span>/ year</span></div><div class="price-desc">Keep your system fire-season-ready every year.</div><ul class="price-feats"><li>Annual certified inspection</li><li>Full vent seal replacement</li><li>Material integrity check</li><li>Rail system lubrication</li><li>Discounted replacement kits</li></ul><a href="#contact" class="price-btn price-btn-sec">Add to Your System</a></div></div></div></section>
-<section class="trust"><div class="max"><div class="eyebrow">Why FireShield</div><h2>Built on Trust</h2><div class="trust-grid"><div class="tcard"><div class="tcard-icon">🏅</div><div class="tcard-title">Certified Installers Only</div><div class="tcard-desc">Every system is installed by a factory-certified dealer who completed our 2-day training program.</div></div><div class="tcard"><div class="tcard-icon">📋</div><div class="tcard-title">CAL FIRE Aligned</div><div class="tcard-desc">Designed to meet or exceed California Title 19 fire protection standards and Safer from Wildfires requirements.</div></div><div class="tcard"><div class="tcard-icon">💰</div><div class="tcard-title">Insurance Discounts</div><div class="tcard-desc">Many CA insurance carriers now offer premium discounts for homes with qualifying fireproofing measures.</div></div><div class="tcard"><div class="tcard-icon">🌎</div><div class="tcard-title">Made in the USA</div><div class="tcard-desc">All FireShield materials sourced and assembled domestically with dual-source supply for fire season availability.</div></div></div></div></section>
-<section class="cta-section" id="contact"><div class="cta-inner"><h2>Don't Wait for<br>Fire Season</h2><p>Installation wait times in high-risk zones are 2–3 weeks. Schedule your free home assessment today.</p><a href="mailto:info@fireshieldhomes.com" class="btn-orange" style="font-size:15px;padding:18px 40px;">Schedule Free Assessment</a><p class="cta-contact">info@fireshieldhomes.com &nbsp;|&nbsp; www.fireshieldhomes.com &nbsp;|&nbsp; Serving CA · OR · WA · CO · AZ</p></div></section>
-<footer><div class="footer-grid"><div><div class="footer-brand-logo">FIRE<span>shield</span></div><p class="footer-tagline">The first deployable full-structure wildfire protection system for homeowners. Built for the West.</p></div><div class="fcol"><h4>Product</h4><ul><li><a href="#product">How It Works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#">Find a Dealer</a></li></ul></div><div class="fcol"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Press</a></li><li><a href="#">Investors</a></li></ul></div><div class="fcol"><h4>Contact</h4><ul><li><a href="mailto:info@fireshieldhomes.com">Email Us</a></li><li><a href="#">Schedule Assessment</a></li><li><a href="#">Dealer Program</a></li></ul></div></div><div class="footer-bottom">© 2025 FireShield Home Systems, Inc. All rights reserved.</div></footer>
-</body>
-</html>
+import { useState } from "react";
+
+const PROFILE = `Name: Irina Borissova
+Title: EVP of Marketing & Co-Founder, CDI Media | Former Google Account Director | SEM Director at Chewy
+Location: San Francisco Bay Area
+Email: irina_borissova@yahoo.com | Phone: 650-218-3376
+Target roles: Director / Senior Director of Performance Marketing, Growth Marketing Director
+Open to: Remote and Bay Area hybrid
+
+EXPERIENCE HIGHLIGHTS:
+- Co-Founded CDI Media, a digital marketing & AI solutions agency (current)
+- Google — Account Director (managed large advertiser portfolios)
+- Microsoft — Search Marketing Strategist
+- Chewy — SEM Director (managed substantial Amazon & Google Ads budgets)
+- Hint Water, E&J Gallo Winery, Macy's, Sabre, LookSmart — senior marketing roles
+- 20+ years in performance marketing
+
+KEY PROOF POINTS:
+- Drove medical practice client from 10 leads/month at $13 CPA → high-volume pipeline at $7 CPA (46% cost reduction) via Performance Max + A/B testing
+- Expert panelist on Agentic AI's impact on performance marketing (Amazon Ads)
+- Published thought leader: "The Sovereign Creative: Navigating the AI-Opaque Era of Paid Search" (Medium)
+
+TECHNICAL EXPERTISE:
+Google Performance Max, SA360, DV360, GA4, Amazon Ads Agent, Amazon Marketing Cloud, GEO/AEO, server-to-server tagging, first-party audience infrastructure, GoHighLevel
+
+CERTIFICATIONS: Google Ads Search, Google Analytics, Microsoft Advertising, SEMrush Advertising, HubSpot Content Marketing
+
+UNIQUE DIFFERENTIATOR:
+Trained actress (Academy of Theater Arts, St. Petersburg) — brings exceptional storytelling, executive presence, and stakeholder communication to marketing leadership`;
+
+// Job board search URLs — open directly for real results
+const JOB_SOURCES = [
+  {
+    name: "LinkedIn",
+    color: "#0077b5",
+    icon: "in",
+    searches: [
+      { label: "Director Performance Marketing", url: "https://www.linkedin.com/jobs/search/?keywords=Director+Performance+Marketing&location=San+Francisco+Bay+Area&f_WT=2%2C3&f_E=4%2C5&sortBy=DD" },
+      { label: "Sr Director Growth Marketing", url: "https://www.linkedin.com/jobs/search/?keywords=Senior+Director+Growth+Marketing&location=United+States&f_WT=2&f_E=4%2C5&sortBy=DD" },
+      { label: "Head of Paid Search", url: "https://www.linkedin.com/jobs/search/?keywords=Head+of+Paid+Search&location=United+States&f_WT=2&sortBy=DD" },
+    ]
+  },
+  {
+    name: "Indeed",
+    color: "#2164f3",
+    icon: "in",
+    searches: [
+      { label: "Director Performance Marketing Remote", url: "https://www.indeed.com/jobs?q=director+performance+marketing&l=remote&sort=date&fromage=1" },
+      { label: "Growth Marketing Director", url: "https://www.indeed.com/jobs?q=growth+marketing+director&l=San+Francisco%2C+CA&sort=date&fromage=1" },
+      { label: "Paid Search Director", url: "https://www.indeed.com/jobs?q=paid+search+director&l=remote&sort=date&fromage=1" },
+    ]
+  },
+  {
+    name: "Google Jobs",
+    color: "#34a853",
+    icon: "G",
+    searches: [
+      { label: "Director Performance Marketing", url: "https://www.google.com/search?q=director+performance+marketing+jobs&ibp=htl;jobs&sa=X&ved=2ahUKEwi&htivrt=jobs&htidocid=&tbs=qdr:d" },
+      { label: "Senior Director Paid Media", url: "https://www.google.com/search?q=senior+director+paid+media+remote+jobs&ibp=htl;jobs" },
+    ]
+  },
+  {
+    name: "Wellfound",
+    color: "#ff6154",
+    icon: "W",
+    searches: [
+      { label: "Head of Marketing (Startup)", url: "https://wellfound.com/jobs?role=marketing&query=director+performance+marketing" },
+    ]
+  },
+];
+
+const SAMPLE_JOBS = `1. Director of Performance Marketing — Affirm | Remote | Posted today
+Apply: https://boards.greenhouse.io/affirm
+
+2. Senior Director, Growth Marketing — Instacart | San Francisco, CA | Posted 2 days ago
+Apply: https://instacart.careers
+
+3. Head of Paid Search & Display — Hims & Hers | Remote | Posted today
+Apply: https://www.himsandhers.com/careers
+
+4. Director, Consumer Paid Marketing — Chime | San Francisco, CA | Posted 1 day ago
+Apply: https://chime.com/careers
+
+5. VP of Performance Marketing — OpenDoor | Remote | Posted today
+Apply: https://www.opendoor.com/careers`;
+
+const TABS = [
+  { id: "scorer",     icon: "⚡", label: "Job Scorer"    },
+  { id: "boards",     icon: "🔍", label: "Search Boards" },
+  { id: "interview",  icon: "🎯", label: "Interview Prep"},
+  { id: "coverletter",icon: "✉️", label: "Cover Letter"  },
+  { id: "linkedin",   icon: "💼", label: "LinkedIn Posts"},
+];
+
+const ACCENT = "#c8a96e";
+const DARK   = "#0f0e0c";
+const CARD   = "#1a1815";
+const BORDER = "#2a2620";
+const TEXT   = "#e8e0d0";
+const MUTED  = "#7a7060";
+
+export default function JobSearchHub() {
+  const [tab, setTab]       = useState("scorer");
+  const [jd, setJd]         = useState("");
+  const [jobs, setJobs]     = useState("");
+  const [tone, setTone]     = useState("confident");
+  const [topic, setTopic]   = useState("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  async function callClaude(prompt) {
+    setLoading(true);
+    setResult(null);
+    setCopied(false);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+      const data = await res.json();
+      setResult(data.content?.[0]?.text || "No response received.");
+    } catch (e) {
+      setResult(`Error: ${e.message}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function handleScore() {
+    if (!jobs.trim()) return;
+    callClaude(`You are an executive career coach helping a senior marketing leader find her best-fit roles.
+
+CANDIDATE PROFILE:
+${PROFILE}
+
+TODAY'S JOB LISTINGS (copied from job boards):
+${jobs}
+
+For each job listing provided, output a scored analysis in this exact format:
+
+─────────────────────────────────
+JOB TITLE — Company
+Match Score: X/10
+Why it's a fit: [2 sentences max — specific to Irina's background]
+Potential concern: [1 sentence — any gap or risk]
+First thing to highlight in application: [1 sentence — her strongest proof point for THIS role]
+─────────────────────────────────
+
+After all jobs, add:
+TOP PICK: [Job title + company] — [one sentence why it's the best match]
+APPLY FIRST: List jobs in priority order (highest match first)
+
+Be honest — a 6/10 is fine if it's a real 6. Don't inflate scores.`);
+  }
+
+  function handleInterview() {
+    if (!jd.trim()) return;
+    callClaude(`You are an executive career coach preparing a senior marketing leader for a job interview.
+
+CANDIDATE PROFILE:
+${PROFILE}
+
+JOB DESCRIPTION:
+${jd}
+
+Generate a targeted interview prep guide with:
+1. TOP 6 LIKELY INTERVIEW QUESTIONS for this specific role (based on the JD)
+2. For each question, write Irina's ideal answer using her real experience — specific, concise, story-driven. Reference her actual proof points where relevant.
+3. ONE curveball question they might ask and how to handle it
+4. 3 smart questions Irina should ask the interviewer at the end
+
+Format cleanly with bold question headers. Answers should sound natural and confident, not scripted.`);
+  }
+
+  function handleCoverLetter() {
+    if (!jd.trim()) return;
+    callClaude(`You are a senior executive resume writer crafting a cover letter for Irina Borissova.
+
+CANDIDATE PROFILE:
+${PROFILE}
+
+JOB DESCRIPTION:
+${jd}
+
+Write a compelling, ${tone} cover letter that:
+1. Opens with a strong hook (not "I am applying for…")
+2. Connects her 20+ year track record to this specific role's needs
+3. Highlights her #1 proof point (medical practice: 46% CPA reduction via PMax)
+4. Mentions her unique angle — trained actress + data-driven marketer
+5. Closes with confident, specific next-step language
+6. Feels human, not AI-generated
+
+Tone: ${tone}. Length: 3 tight paragraphs. No fluff. No clichés.
+Sign off as: Irina Borissova | irina_borissova@yahoo.com | 650-218-3376`);
+  }
+
+  function handleLinkedIn() {
+    if (!topic.trim()) return;
+    callClaude(`You are a LinkedIn content strategist writing for Irina Borissova, a senior performance marketing leader and Co-Founder of CDI Media.
+
+CANDIDATE PROFILE:
+${PROFILE}
+
+TOPIC / IDEA: ${topic}
+
+Write 3 LinkedIn post variations:
+
+Variation 1 — INSIGHT POST: A sharp professional insight or contrarian take. Starts with a one-line hook. 150–200 words. Max 3 hashtags.
+
+Variation 2 — STORY POST: Opens with a specific moment or client result from Irina's career. Personal, specific, relatable. 180–220 words.
+
+Variation 3 — THOUGHT LEADERSHIP: Positions Irina as an AI + performance marketing expert. 150–180 words. Authoritative but approachable.
+
+No "Excited to share" openings. No generic motivational tone. Sound like a real senior professional.`);
+  }
+
+  function copyResult() {
+    if (result) {
+      navigator.clipboard.writeText(result);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
+
+  return (
+    <div style={{ minHeight: "100vh", background: DARK, color: TEXT, fontFamily: "'Palatino Linotype', Georgia, serif" }}>
+
+      {/* Header */}
+      <div style={{
+        borderBottom: `1px solid ${BORDER}`, padding: "22px 32px",
+        background: "linear-gradient(135deg, #0f0e0c 0%, #1a1510 100%)",
+        display: "flex", alignItems: "center", justifyContent: "space-between"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{
+            width: 42, height: 42, borderRadius: 8,
+            background: `linear-gradient(135deg, ${ACCENT}, #8a6030)`,
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20
+          }}>✦</div>
+          <div>
+            <div style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-0.5px", color: "#f0e8d8" }}>
+              Job Search Command Hub
+            </div>
+            <div style={{ fontSize: 12, color: MUTED, marginTop: 1 }}>
+              Irina Borissova · Senior Performance Marketing Leader · Bay Area / Remote
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: 12, color: MUTED, textAlign: "right", borderLeft: `1px solid ${BORDER}`, paddingLeft: 24 }}>
+          <div style={{ color: ACCENT, fontWeight: 600, marginBottom: 3 }}>⏰ Interview: June 9 · 3:00 PM PT</div>
+          <div>Director of Digital Marketing</div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div style={{ display: "flex", borderBottom: `1px solid ${BORDER}`, padding: "0 32px", background: "#13120f", overflowX: "auto" }}>
+        {TABS.map(t => (
+          <button key={t.id} onClick={() => { setTab(t.id); setResult(null); }} style={{
+            padding: "15px 20px", border: "none", background: "transparent",
+            fontSize: 13, cursor: "pointer", display: "flex", alignItems: "center", gap: 6,
+            color: tab === t.id ? ACCENT : MUTED,
+            borderBottom: tab === t.id ? `2px solid ${ACCENT}` : "2px solid transparent",
+            fontFamily: "inherit", fontWeight: tab === t.id ? 700 : 400,
+            whiteSpace: "nowrap", transition: "color 0.2s"
+          }}>
+            {t.icon} {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "30px 32px" }}>
+
+        {/* ── JOB SCORER ── */}
+        {tab === "scorer" && (
+          <div>
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 18, fontWeight: 700, color: "#f0e8d8", marginBottom: 6 }}>Job Relevance Scorer</div>
+              <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.6 }}>
+                Each morning, search the boards below → copy & paste the job listings here → Claude scores each one against your background and tells you which to apply to first.
+              </div>
+            </div>
+
+            {/* Quick tip box */}
+            <div style={{
+              background: "#1a1d12", border: `1px solid #2a3020`,
+              borderRadius: 8, padding: "14px 18px", marginBottom: 20,
+              display: "flex", gap: 12, alignItems: "flex-start"
+            }}>
+              <span style={{ fontSize: 18 }}>💡</span>
+              <div style={{ fontSize: 13, color: "#a0b880", lineHeight: 1.6 }}>
+                <strong style={{ color: "#c8e090" }}>How to use:</strong> Go to the Search Boards tab → open any link → copy the job titles, companies, and apply URLs → paste them all below → hit Score.
+              </div>
+            </div>
+
+            <Label>Paste Today's Job Listings</Label>
+            <textarea
+              value={jobs}
+              onChange={e => setJobs(e.target.value)}
+              placeholder={SAMPLE_JOBS}
+              style={{ ...textareaStyle, rows: 10, minHeight: 200 }}
+              rows={10}
+            />
+            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+              <ActionButton onClick={handleScore} disabled={!jobs.trim() || loading}>
+                ⚡ Score All Jobs
+              </ActionButton>
+              {jobs && <ClearButton onClick={() => { setJobs(""); setResult(null); }} />}
+            </div>
+            <Hint>Claude scores each job 1–10, explains the fit, flags concerns, and ranks them in apply-first order.</Hint>
+          </div>
+        )}
+
+        {/* ── SEARCH BOARDS ── */}
+        {tab === "boards" && (
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#f0e8d8", marginBottom: 6 }}>Job Board Search Links</div>
+            <div style={{ fontSize: 13, color: MUTED, marginBottom: 20, lineHeight: 1.6 }}>
+              These links are pre-configured for your target roles. Click any to open fresh results — sorted by newest first. Copy the listings and paste into Job Scorer.
+            </div>
+
+            {JOB_SOURCES.map(source => (
+              <div key={source.name} style={{
+                background: CARD, border: `1px solid ${BORDER}`,
+                borderRadius: 10, padding: "18px 22px", marginBottom: 14
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 6,
+                    background: source.color, color: "#fff",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 12, fontWeight: 800
+                  }}>{source.icon}</div>
+                  <div style={{ fontWeight: 700, fontSize: 15, color: "#f0e8d8" }}>{source.name}</div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {source.searches.map(s => (
+                    <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" style={{
+                      display: "flex", alignItems: "center", justifyContent: "space-between",
+                      padding: "10px 14px", background: "#0f0e0c",
+                      border: `1px solid ${BORDER}`, borderRadius: 7,
+                      textDecoration: "none", color: TEXT, fontSize: 13,
+                      transition: "border-color 0.2s",
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.borderColor = ACCENT}
+                    onMouseLeave={e => e.currentTarget.style.borderColor = BORDER}
+                    >
+                      <span>🔍 {s.label}</span>
+                      <span style={{ color: ACCENT, fontSize: 12 }}>Open →</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* Daily alert setup */}
+            <div style={{
+              background: "#12100f", border: `1px solid ${BORDER}`,
+              borderRadius: 10, padding: "18px 22px", marginTop: 8
+            }}>
+              <div style={{ fontWeight: 700, fontSize: 14, color: ACCENT, marginBottom: 10 }}>
+                📬 Set Up Daily Email Alerts (5 min, free)
+              </div>
+              <div style={{ fontSize: 13, color: MUTED, lineHeight: 1.9 }}>
+                <div>1. <strong style={{ color: TEXT }}>LinkedIn:</strong> Run any search above → click "Set alert" → choose Daily</div>
+                <div>2. <strong style={{ color: TEXT }}>Indeed:</strong> Run a search → scroll down → "Get new jobs for this search by email"</div>
+                <div>3. <strong style={{ color: TEXT }}>Google Jobs:</strong> Search "director performance marketing jobs" on Google → click the bell icon → Daily</div>
+                <div style={{ marginTop: 10, color: "#a09080" }}>Each morning you'll get an email digest → copy those listings → paste into the Job Scorer tab.</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── INTERVIEW PREP ── */}
+        {tab === "interview" && (
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#f0e8d8", marginBottom: 16 }}>Interview Prep Coach</div>
+            <Label>Paste the Job Description</Label>
+            <textarea value={jd} onChange={e => setJd(e.target.value)}
+              placeholder="Paste the full job description here…"
+              style={{ ...textareaStyle, minHeight: 180 }} rows={8} />
+            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+              <ActionButton onClick={handleInterview} disabled={!jd.trim() || loading}>
+                🎯 Generate Interview Prep Guide
+              </ActionButton>
+              {jd && <ClearButton onClick={() => { setJd(""); setResult(null); }} />}
+            </div>
+            <Hint>6 tailored questions with your ideal answers, a curveball, and smart questions to ask — all based on your real background.</Hint>
+          </div>
+        )}
+
+        {/* ── COVER LETTER ── */}
+        {tab === "coverletter" && (
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#f0e8d8", marginBottom: 16 }}>Cover Letter Generator</div>
+            <Label>Paste the Job Description</Label>
+            <textarea value={jd} onChange={e => setJd(e.target.value)}
+              placeholder="Paste the job description here…"
+              style={{ ...textareaStyle, minHeight: 160 }} rows={7} />
+            <Label style={{ marginTop: 18 }}>Tone</Label>
+            <div style={{ display: "flex", gap: 8, marginTop: 8, marginBottom: 16, flexWrap: "wrap" }}>
+              {["confident", "warm & personal", "direct & concise", "executive"].map(t => (
+                <button key={t} onClick={() => setTone(t)} style={{
+                  padding: "7px 16px", borderRadius: 20,
+                  border: `1px solid ${tone === t ? ACCENT : BORDER}`,
+                  background: tone === t ? `${ACCENT}22` : "transparent",
+                  color: tone === t ? ACCENT : MUTED,
+                  cursor: "pointer", fontSize: 13, fontFamily: "inherit", transition: "all 0.15s"
+                }}>{t}</button>
+              ))}
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <ActionButton onClick={handleCoverLetter} disabled={!jd.trim() || loading}>
+                ✉️ Generate Cover Letter
+              </ActionButton>
+              {jd && <ClearButton onClick={() => { setJd(""); setResult(null); }} />}
+            </div>
+            <Hint>3-paragraph letter in your voice — strong hook, your real proof points, no fluff.</Hint>
+          </div>
+        )}
+
+        {/* ── LINKEDIN ── */}
+        {tab === "linkedin" && (
+          <div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: "#f0e8d8", marginBottom: 16 }}>LinkedIn Post Drafting Tool</div>
+            <Label>What do you want to post about?</Label>
+            <textarea value={topic} onChange={e => setTopic(e.target.value)}
+              placeholder={`Examples:\n• Why Performance Max is misunderstood by most agencies\n• What I learned managing campaigns across 20 years\n• The AI tools changing paid search right now\n• My take on first-party data and the cookieless future`}
+              style={{ ...textareaStyle, minHeight: 130 }} rows={5} />
+            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+              <ActionButton onClick={handleLinkedIn} disabled={!topic.trim() || loading}>
+                💼 Generate 3 Post Variations
+              </ActionButton>
+              {topic && <ClearButton onClick={() => { setTopic(""); setResult(null); }} />}
+            </div>
+            <Hint>Insight post, story post, and thought leadership post — pick the one that feels most like you.</Hint>
+          </div>
+        )}
+
+        {/* ── AI Result ── */}
+        {(loading || result) && (
+          <div style={{
+            marginTop: 28, background: CARD,
+            border: `1px solid ${BORDER}`, borderLeft: `3px solid ${ACCENT}`,
+            borderRadius: 10, padding: "24px 28px",
+          }}>
+            {loading ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 12, color: ACCENT }}>
+                <div style={{
+                  width: 18, height: 18, border: `2px solid ${ACCENT}`,
+                  borderTop: "2px solid transparent", borderRadius: "50%",
+                  animation: "spin 0.8s linear infinite"
+                }} />
+                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                Claude is analyzing…
+              </div>
+            ) : (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: ACCENT, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                    ✦ Generated Output
+                  </div>
+                  <button onClick={copyResult} style={{
+                    padding: "5px 14px", background: copied ? "#2a3a2a" : "#222018",
+                    border: `1px solid ${copied ? "#4a7a4a" : BORDER}`,
+                    borderRadius: 6, color: copied ? "#86efac" : MUTED,
+                    fontSize: 12, cursor: "pointer", fontFamily: "inherit", transition: "all 0.2s"
+                  }}>
+                    {copied ? "✓ Copied!" : "Copy"}
+                  </button>
+                </div>
+                <div style={{
+                  fontSize: 14, lineHeight: 1.85, color: "#d8d0c0",
+                  whiteSpace: "pre-wrap", fontFamily: "'Segoe UI', system-ui, sans-serif"
+                }}>
+                  {result}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Label({ children, style }) {
+  return <div style={{ fontSize: 12, fontWeight: 700, color: MUTED, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, ...style }}>{children}</div>;
+}
+function Hint({ children }) {
+  return <div style={{ fontSize: 12, color: MUTED, marginTop: 10, fontStyle: "italic" }}>{children}</div>;
+}
+function ActionButton({ children, onClick, disabled }) {
+  return (
+    <button onClick={onClick} disabled={disabled} style={{
+      padding: "11px 24px",
+      background: disabled ? "#1a1815" : `linear-gradient(135deg, ${ACCENT}, #8a6030)`,
+      border: "none", borderRadius: 7,
+      color: disabled ? MUTED : "#0f0e0c",
+      fontSize: 14, fontWeight: 700, cursor: disabled ? "not-allowed" : "pointer",
+      fontFamily: "inherit", opacity: disabled ? 0.5 : 1, transition: "opacity 0.2s"
+    }}>{children}</button>
+  );
+}
+function ClearButton({ onClick }) {
+  return (
+    <button onClick={onClick} style={{
+      padding: "11px 18px", background: "transparent",
+      border: `1px solid ${BORDER}`, borderRadius: 7,
+      color: MUTED, fontSize: 13, cursor: "pointer", fontFamily: "inherit"
+    }}>Clear</button>
+  );
+}
+const textareaStyle = {
+  width: "100%", background: CARD, border: `1px solid ${BORDER}`,
+  borderRadius: 8, padding: "14px 16px", color: TEXT,
+  fontSize: 14, fontFamily: "'Segoe UI', system-ui, sans-serif",
+  lineHeight: 1.6, resize: "vertical", outline: "none", boxSizing: "border-box"
+};
